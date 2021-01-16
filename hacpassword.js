@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const dotenv = require('dotenv').config();
 
 // Expected command line should be in the following formats:
-// node eschool.js 40305966 NewP@ssw0rd
+// node hacpassword.js 40305966 NewP@ssw0rd
 
 if (process.argv[2] === undefined) {
     console.log('You must specify a StudentID or CSV to process.');
