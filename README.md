@@ -1,6 +1,12 @@
 # HAC_Passwords
+
+Sample command for single student:
 > node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -studentid 40305966 -hacpassword "NewP@ssw0rd"
+Sample command for processing a CSV:
 > node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -csv hac_passwords.csv
+
+## CSV Headers
+Student_id,Password
 
 ## Install needed modules:
 * npm i puppeteer
