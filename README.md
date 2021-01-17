@@ -6,6 +6,9 @@ Sample command for single student:
 Sample command for processing a CSV:
 > node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -csv hac_passwords.csv
 
+Do not require password change:
+> -donotrequirepasswordchange
+
 ## CSV Headers
 Student_id,Password
 
@@ -16,5 +19,5 @@ Student_id,Password
 ## Project Goals:
 - [ ] Lots of Error Control
 - [x] Processing a CSV
-- [ ] Do not require password change
+- [X] Do not require password change
 - [ ] Set username to email or just username

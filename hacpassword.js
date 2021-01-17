@@ -39,6 +39,10 @@ if (process.argv.indexOf('-csv') === -1) {
   var studentsCSV = [];
 }
 
+if (process.argv.indexOf('-donotrequirepasswordchange') > 0) {
+  var passwordChangeNotRequired = true
+}
+
 // eSchool login
 (async () => {
   const browser = await puppeteer.launch({
@@ -98,6 +102,10 @@ if (process.argv.indexOf('-csv') === -1) {
       await page.waitForSelector('#AddressOrContactDetail_PasswordToDisplay');
       await page.focus('#AddressOrContactDetail_PasswordToDisplay')
       await page.keyboard.type(HACPassword)
+
+      if (passwordChangeNotRequired) {
+        await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
+      }
 
       await page.click('#pageOptions-option-save');
       await page.waitForTimeout(500);
@@ -169,7 +177,11 @@ if (process.argv.indexOf('-csv') === -1) {
               await stuPage.waitForSelector('#AddressOrContactDetail_PasswordToDisplay');
               await stuPage.focus('#AddressOrContactDetail_PasswordToDisplay')
               await stuPage.keyboard.type(HACPassword)
-  
+              
+              if (passwordChangeNotRequired) {
+                await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
+              }
+
               await stuPage.click('#pageOptions-option-save');
               await stuPage.waitForTimeout(1000);
 
