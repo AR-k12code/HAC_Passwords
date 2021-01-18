@@ -43,6 +43,15 @@ if (process.argv.indexOf('-donotrequirepasswordchange') > 0) {
   var passwordChangeNotRequired = true
 }
 
+if (process.argv.indexOf('-setloginidasemail') > 0) {
+  var loginIDAsEmail = true
+}
+
+if (process.argv.indexOf('-setloginidasusername') > 0) {
+  var loginIDAsUsername = true
+}
+
+
 // eSchool login
 (async () => {
   const browser = await puppeteer.launch({
@@ -102,6 +111,39 @@ if (process.argv.indexOf('-donotrequirepasswordchange') > 0) {
       await page.waitForSelector('#AddressOrContactDetail_PasswordToDisplay');
       await page.focus('#AddressOrContactDetail_PasswordToDisplay')
       await page.keyboard.type(HACPassword)
+
+      //Get email address
+      await page.waitForSelector('#AddressOrContactDetail_Contact_Email');
+      let emailAddressSelector = await page.$('#AddressOrContactDetail_Contact_Email');
+      let emailAddress = await page.evaluate(el => el.value, emailAddressSelector);
+
+      //If email is not empty then continue.
+      if (emailAddress.length > 0) {
+        if (loginIDAsEmail) {
+          //empty login id box
+          let loginIDSelector = await page.$('#AddressOrContactDetail_Contact_LoginID');
+          await page.evaluate(el => el.value = "", loginIDSelector);
+          //insert full email address
+          await page.focus('#AddressOrContactDetail_Contact_LoginID');
+          await page.keyboard.type(emailAddress)
+        }
+
+        if (loginIDAsUsername) {
+          if (emailAddress.indexOf('@') > 0) {
+            //empty login id box.
+            let loginIDSelector = await page.$('#AddressOrContactDetail_Contact_LoginID');
+            await page.evaluate(el => el.value = "", loginIDSelector);
+            //find username from email and input.
+            var loginID = emailAddress.slice(0,emailAddress.indexOf('@'));
+            await page.focus('#AddressOrContactDetail_Contact_LoginID');
+            await page.keyboard.type(loginID);
+          }
+        }
+      } else {
+        console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
+        await page.close();
+        process.exit(1)
+      }
 
       if (passwordChangeNotRequired) {
         await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
@@ -178,8 +220,41 @@ if (process.argv.indexOf('-donotrequirepasswordchange') > 0) {
               await stuPage.focus('#AddressOrContactDetail_PasswordToDisplay')
               await stuPage.keyboard.type(HACPassword)
               
+              //Get email address
+              await stuPage.waitForSelector('#AddressOrContactDetail_Contact_Email');
+              let emailAddressSelector = await stuPage.$('#AddressOrContactDetail_Contact_Email');
+              let emailAddress = await stuPage.evaluate(el => el.value, emailAddressSelector);
+
+              //If email is not empty then continue.
+              if (emailAddress.length > 0) {
+                if (loginIDAsEmail) {
+                  //empty login id box
+                  let loginIDSelector = await stuPage.$('#AddressOrContactDetail_Contact_LoginID');
+                  await stuPage.evaluate(el => el.value = "", loginIDSelector);
+                  //insert full email address
+                  await stuPage.focus('#AddressOrContactDetail_Contact_LoginID');
+                  await stuPage.keyboard.type(emailAddress)
+                }
+
+                if (loginIDAsUsername) {
+                  if (emailAddress.indexOf('@') > 0) {
+                    //empty login id box.
+                    let loginIDSelector = await stuPage.$('#AddressOrContactDetail_Contact_LoginID');
+                    await stuPage.evaluate(el => el.value = "", loginIDSelector);
+                    //find username from email and input.
+                    var loginID = emailAddress.slice(0,emailAddress.indexOf('@'));
+                    await stuPage.focus('#AddressOrContactDetail_Contact_LoginID');
+                    await stuPage.keyboard.type(loginID);
+                  }
+                }
+              } else {
+                console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
+                await stuPage.close();
+                continue
+              }
+
               if (passwordChangeNotRequired) {
-                await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
+                await stuPage.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
               }
 
               await stuPage.click('#pageOptions-option-save');
