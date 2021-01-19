@@ -58,7 +58,7 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
 (async () => {
   const browser = await puppeteer.launch({
     //uncomment to troubleshoot
-    //headless: false,
+    headless: false,
     //slowMo: 250
   });
   
@@ -130,6 +130,10 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
           //insert full email address
           await page.focus('#AddressOrContactDetail_Contact_LoginID');
           await page.keyboard.type(emailAddress)
+        } else {
+          console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
+          await page.close();
+          process.exit(1)
         }
 
         if (loginIDAsUsername) {
@@ -142,12 +146,12 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
             await page.focus('#AddressOrContactDetail_Contact_LoginID');
             await page.keyboard.type(loginID);
           }
+        } else {
+          console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
+          await page.close();
+          process.exit(1)
         }
-      } else {
-        console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
-        await page.close();
-        process.exit(1)
-      }
+      } 
 
       if (passwordChangeNotRequired) {
         await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
@@ -238,6 +242,10 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
                   //insert full email address
                   await stuPage.focus('#AddressOrContactDetail_Contact_LoginID');
                   await stuPage.keyboard.type(emailAddress)
+                } else {
+                  console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
+                  await stuPage.close();
+                  continue
                 }
 
                 if (loginIDAsUsername) {
@@ -250,11 +258,11 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
                     await stuPage.focus('#AddressOrContactDetail_Contact_LoginID');
                     await stuPage.keyboard.type(loginID);
                   }
+                } else {
+                  console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
+                  await stuPage.close();
+                  continue
                 }
-              } else {
-                console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
-                await stuPage.close();
-                continue
               }
 
               if (passwordChangeNotRequired) {
