@@ -57,7 +57,9 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
 // eSchool login
 (async () => {
   const browser = await puppeteer.launch({
-    //headless: false
+    //uncomment to troubleshoot
+    //headless: false,
+    //slowMo: 250
   });
   
   const page = await browser.newPage();
