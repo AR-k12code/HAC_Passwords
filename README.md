@@ -1,5 +1,7 @@
 # HAC_Passwords
 
+This project is for Arkansas Public Schools to set their students HAC passwords to a predefined password.
+
 Sample command for single student:
 ````
 $ node hacpassword.js -username 0401cmillsap -password [SSOPASSWORD] -studentid 40305966 -hacpassword "NewP@ssw0rd" -donotrequirepasswordchange -setloginidasemail
@@ -21,7 +23,7 @@ Using the PowerShell Wrapper to use your existing Encrypted Password:
 - `-setloginidasemail` Sets the HAC login to the value of the Email Box. This needs to be populated otherwise will error.
 - `-setloginidasusername` Sets the HAC login to the value of the Email Box with the domain stripped off. (example JohnDoe@myschool.com would be JohnDoe)
 
-## CSV Example
+## CSV Example:
 ````
 Student_id,Password
 403001234,Sports.1234
