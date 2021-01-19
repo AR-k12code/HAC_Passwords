@@ -2,12 +2,12 @@
 
 Sample command for single student:
 ````
-$ node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -studentid 40305966 -hacpassword "NewP@ssw0rd" -donotrequirepasswordchange -setloginidasemail
+$ node hacpassword.js -username 0401cmillsap -password [SSOPASSWORD] -studentid 40305966 -hacpassword "NewP@ssw0rd" -donotrequirepasswordchange -setloginidasemail
 ````
 
 Sample command for processing a CSV:
 ````
-node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -csv hac_passwords.csv -donotrequirepasswordchange -setloginidasusername
+node hacpassword.js -username 0401cmillsap -password [SSOPASSWORD] -csv hac_passwords.csv -donotrequirepasswordchange -setloginidasusername
 ````
 
 Using the PowerShell Wrapper to use your existing Encrypted Password:
@@ -17,9 +17,9 @@ Using the PowerShell Wrapper to use your existing Encrypted Password:
 ````
 
 #Command Line arguments:
-`-donotrequirepasswordchange` Check the box do not require password change.
-`-setloginidasemail` Sets the HAC login to the value of the Email Box. This needs to be populated otherwise will error.
-`-setloginidasusername` Sets the HAC login to the value of the Email Box with the domain stripped off. (example JohnDoe@myschool.com would be JohnDoe)
+- `-donotrequirepasswordchange` Check the box do not require password change.
+- `-setloginidasemail` Sets the HAC login to the value of the Email Box. This needs to be populated otherwise will error.
+- `-setloginidasusername` Sets the HAC login to the value of the Email Box with the domain stripped off. (example JohnDoe@myschool.com would be JohnDoe)
 
 ## CSV Example
 ````
