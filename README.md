@@ -30,6 +30,9 @@ Student_id,Password
 403002345,Water!2345
 ````
 
+## Requirements
+* Node.js `https://nodejs.org/en/download/`
+
 ## Install needed modules:
 * npm i puppeteer
 * npm i csv-parser
