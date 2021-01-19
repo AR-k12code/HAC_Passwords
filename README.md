@@ -16,7 +16,7 @@ Using the PowerShell Wrapper to use your existing Encrypted Password:
 .\hacpassword.ps1 -username 0403cmillsap -CSV hac_passwords.csv -SetLoginIDasUsername -DoNotRequirePasswordChange
 ````
 
-#Command Line arguments:
+## Command Line arguments:
 - `-donotrequirepasswordchange` Check the box do not require password change.
 - `-setloginidasemail` Sets the HAC login to the value of the Email Box. This needs to be populated otherwise will error.
 - `-setloginidasusername` Sets the HAC login to the value of the Email Box with the domain stripped off. (example JohnDoe@myschool.com would be JohnDoe)
