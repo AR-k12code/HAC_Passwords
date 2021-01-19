@@ -6,7 +6,7 @@
 Param(
 [parameter(mandatory=$true,Helpmessage="eSchool username")][String]$username, #You're SSO Username
 [parameter(Mandatory=$false,HelpMessage="File for ADE SSO Password")][String]$passwordfile="C:\Scripts\apscnpw.txt", #Specify if you need a different path.
-[parameter(mandatory=$false,Helpmessage="CSV File Path")][string]$CSVPath,
+[parameter(mandatory=$false,Helpmessage="CSV File Path")][string]$CSV,
 [parameter(mandatory=$false,Helpmessage="Student ID")][int]$studentID,
 [parameter(mandatory=$false,Helpmessage="Student HAC Password")][string]$hacpassword,
 [parameter(mandatory=$false,Helpmessage="Do not require password change")][switch]$DoNotRequirePasswordChange,
@@ -30,9 +30,9 @@ if ($DoNotRequirePasswordChange) {
     $nodeArguments += @('-donotrequirepasswordchange')
 }
 
-if ($CSVPath) {
-    if (Test-Path $CSVPath) {
-        $nodeArguments += @("-csv","""$CSVPath""")
+if ($CSV) {
+    if (Test-Path $CSV) {
+        $nodeArguments += @("-csv","""$CSV""")
     }
 } else {
     $nodeArguments += @('-studentid',$studentID,"-hacpassword","""$hacpassword""")

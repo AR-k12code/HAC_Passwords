@@ -10,6 +10,12 @@ Sample command for processing a CSV:
 node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -csv hac_passwords.csv -donotrequirepasswordchange -setloginidasusername
 ````
 
+Using the PowerShell Wrapper to use your existing Encrypted Password:
+````
+.\hacpassword.ps1 -username 0403cmillsap -studentID 403005966 -hacpassword "Testing 123234" -SetLoginIDasEmail -DoNotRequirePasswordChange
+.\hacpassword.ps1 -username 0403cmillsap -CSV hac_passwords.csv -SetLoginIDasUsername -DoNotRequirePasswordChange
+````
+
 #Command Line arguments:
 `-donotrequirepasswordchange` Check the box do not require password change.
 `-setloginidasemail` Sets the HAC login to the value of the Email Box. This needs to be populated otherwise will error.
