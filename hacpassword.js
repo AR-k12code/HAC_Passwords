@@ -7,6 +7,8 @@ const fs = require('fs');
 // node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -studentid 40305966 -hacpassword "NewP@ssw0rd"
 // node hacpassword.js -username 0401cmillsap -password [THIS SHOULD BE PULLED FROM YOUR ENCRYPTED PASSWORD] -csv hac_passwords.csv
 
+//We should validate that this matches the incoming Student ID. Trim and convert to int.
+//document.getElementById("StudentId").value 
 
 if (process.argv.indexOf('-username') === -1) {
   console.log("-username is a required parameter"); process.exit(1)
@@ -91,10 +93,10 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
     // debugger;
     await page.click('#setEnvOkButton');
 
-      // this doesn't always work.
-      //   await page.waitForNavigation({
-      //     waitUntil: 'networkidle0',
-      //   });
+    // this doesn't always work.
+    //   await page.waitForNavigation({
+    //     waitUntil: 'networkidle0',
+    //   });
       
     //We don't need the page to actually load so just navigate straight to the student after wait.
     await page.waitForTimeout(1000);
