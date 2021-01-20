@@ -129,31 +129,37 @@ if (process.argv.indexOf('-displayprogress') > 0) {
       let emailAddress = await page.evaluate(el => el.value, emailAddressSelector);
 
       //If email is not empty and -setloginidasemail or -setloginidasusername then attempt using it for the LoginID
-      if (emailAddress.length > 0 && (loginIDAsEmail || loginIDAsUsername)) {
-        if (loginIDAsEmail) {
-          //empty login id box
-          let loginIDSelector = await page.$('#AddressOrContactDetail_Contact_LoginID');
-          await page.evaluate(el => el.value = "", loginIDSelector);
-          //insert full email address
-          await page.focus('#AddressOrContactDetail_Contact_LoginID');
-          await page.keyboard.type(emailAddress)
-        }
+      if (loginIDAsEmail || loginIDAsUsername) {
 
-        if (loginIDAsUsername) {
-          if (emailAddress.indexOf('@') > 0) {
-            //empty login id box.
+        if (emailAddress.length > 0) {
+
+          if (loginIDAsEmail) {
+            //empty login id box
             let loginIDSelector = await page.$('#AddressOrContactDetail_Contact_LoginID');
             await page.evaluate(el => el.value = "", loginIDSelector);
-            //find username from email and input.
-            var loginID = emailAddress.slice(0,emailAddress.indexOf('@'));
+            //insert full email address
             await page.focus('#AddressOrContactDetail_Contact_LoginID');
-            await page.keyboard.type(loginID);
+            await page.keyboard.type(emailAddress)
           }
+
+          if (loginIDAsUsername) {
+            if (emailAddress.indexOf('@') > 0) {
+              //empty login id box.
+              let loginIDSelector = await page.$('#AddressOrContactDetail_Contact_LoginID');
+              await page.evaluate(el => el.value = "", loginIDSelector);
+              //find username from email and input.
+              var loginID = emailAddress.slice(0,emailAddress.indexOf('@'));
+              await page.focus('#AddressOrContactDetail_Contact_LoginID');
+              await page.keyboard.type(loginID);
+            }
+          }
+        
+        } else {
+          console.log('Error:',StudentID,'is missing a email address for us to use to create a LoginID. Be sure to populate eSchool email addresses before doing this.');
+          await stuPage.close();
+          process.exit(1)
         }
-      } else {
-        console.log('Error:',StudentID,'is missing a email address for us to use to create a LoginID. Be sure to populate eSchool email addresses before doing this.');
-        await stuPage.close();
-        process.exit(1)
+
       }
 
       if (passwordChangeNotRequired) {
@@ -237,32 +243,36 @@ if (process.argv.indexOf('-displayprogress') > 0) {
               let emailAddress = await stuPage.evaluate(el => el.value, emailAddressSelector);
 
               //If email is not empty and -setloginidasemail or -setloginidasusername then attempt using it for the LoginID
-              if (emailAddress.length > 0 && (loginIDAsEmail || loginIDAsUsername)) {
-                if (loginIDAsEmail) {
-                  //empty login id box
-                  let loginIDSelector = await stuPage.$('#AddressOrContactDetail_Contact_LoginID');
-                  await stuPage.evaluate(el => el.value = "", loginIDSelector);
-                  //insert full email address
-                  await stuPage.focus('#AddressOrContactDetail_Contact_LoginID');
-                  await stuPage.keyboard.type(emailAddress)
-                }
+              if (loginIDAsEmail || loginIDAsUsername) {
 
-                if (loginIDAsUsername) {
-                  if (emailAddress.indexOf('@') > 0) {
-                    //empty login id box.
+                if (emailAddress.length > 0) {
+                  if (loginIDAsEmail) {
+                    //empty login id box
                     let loginIDSelector = await stuPage.$('#AddressOrContactDetail_Contact_LoginID');
                     await stuPage.evaluate(el => el.value = "", loginIDSelector);
-                    //find username from email and input.
-                    var loginID = emailAddress.slice(0,emailAddress.indexOf('@'));
+                    //insert full email address
                     await stuPage.focus('#AddressOrContactDetail_Contact_LoginID');
-                    await stuPage.keyboard.type(loginID);
+                    await stuPage.keyboard.type(emailAddress)
                   }
+
+                  if (loginIDAsUsername) {
+                    if (emailAddress.indexOf('@') > 0) {
+                      //empty login id box.
+                      let loginIDSelector = await stuPage.$('#AddressOrContactDetail_Contact_LoginID');
+                      await stuPage.evaluate(el => el.value = "", loginIDSelector);
+                      //find username from email and input.
+                      var loginID = emailAddress.slice(0,emailAddress.indexOf('@'));
+                      await stuPage.focus('#AddressOrContactDetail_Contact_LoginID');
+                      await stuPage.keyboard.type(loginID);
+                    }
+                  }
+                } else {
+                  console.log('Error:',StudentID,'is missing a email address for us to use to create a LoginID. Be sure to populate eSchool email addresses before doing this.');
+                  await stuPage.close();
+                  continue
                 }
-              } else {
-                console.log('Error:',StudentID,'is missing a email address for us to use to create a LoginID. Be sure to populate eSchool email addresses before doing this.');
-                await stuPage.close();
-                continue
-              }
+
+              } 
 
               if (passwordChangeNotRequired) {
                 await stuPage.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
