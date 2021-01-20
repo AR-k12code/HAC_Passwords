@@ -49,4 +49,9 @@ if ($DisplayProgress) {
     $nodeArguments += @('-displayprogress')
 }
 
-Start-Process -FilePath "node.exe" -ArgumentList $nodeArguments -NoNewWindow -Wait
+$process = Start-Process -FilePath "node.exe" -ArgumentList $nodeArguments -NoNewWindow -Wait -PassThru
+
+if ($process.ExitCode -ge 1) {
+    write-host "Failed to update passwords correctly."
+    exit(1)
+}

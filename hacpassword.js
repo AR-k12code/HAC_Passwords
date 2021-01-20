@@ -57,6 +57,10 @@ if (process.argv.indexOf('-displayprogress') > 0) {
   var displayProgress = true
 }
 
+fs.writeFile('hac_errors.csv', "Student_id,Error Details\r\n", (err) => {
+  if (err) throw err;
+});
+
 // eSchool login
 (async () => {
   if (displayProgress) {
@@ -303,12 +307,22 @@ if (process.argv.indexOf('-displayprogress') > 0) {
                 let element = await stuPage.$('#error-list > li');
                 let value = await stuPage.evaluate(el => el.textContent, element);
                 console.log("Error:",value);
+
+                fs.appendFile('hac_errors.csv', StudentID + ',"' + value + '"\r\n', function (err) {
+                  if (err) throw err;
+                });
+
               }
 
               await stuPage.close();
 
             } catch(err) {
               console.log("Failed to update",StudentID,": ",err)
+              
+              fs.appendFile('hac_errors.csv', StudentID + ',Generic Error\r\n', function (err) {
+                if (err) throw err;
+              });
+
               //still need to close the window.
               await stuPage.close();
             }
@@ -324,7 +338,7 @@ if (process.argv.indexOf('-displayprogress') > 0) {
     }
 
   } catch(err) {
-    console.log('Failed to update password.')
+    console.log('Program crash.',err)
     process.exit(1)
   }
 
