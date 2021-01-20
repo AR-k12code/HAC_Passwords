@@ -192,6 +192,9 @@ if (process.argv.indexOf('-displayprogress') > 0) {
     } else {
       //csv file has been supplied. Lets do some crazy looping.
 
+      //close the original login page because of the timeout box.
+      await page.close();
+
       fs.createReadStream(csvPath)
       .pipe(csv())
       //.on('data', async (row) => {
