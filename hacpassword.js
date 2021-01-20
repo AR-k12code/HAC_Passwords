@@ -57,7 +57,9 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
 // eSchool login
 (async () => {
   const browser = await puppeteer.launch({
-    //headless: false
+    //uncomment to troubleshoot
+    headless: false,
+    //slowMo: 250
   });
   
   const page = await browser.newPage();
@@ -119,8 +121,8 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
       let emailAddressSelector = await page.$('#AddressOrContactDetail_Contact_Email');
       let emailAddress = await page.evaluate(el => el.value, emailAddressSelector);
 
-      //If email is not empty then continue.
-      if (emailAddress.length > 0) {
+      //If email is not empty and -setloginidasemail or -setloginidasusername then attempt using it for the LoginID
+      if (emailAddress.length > 0 && (loginIDAsEmail || loginIDAsUsername)) {
         if (loginIDAsEmail) {
           //empty login id box
           let loginIDSelector = await page.$('#AddressOrContactDetail_Contact_LoginID');
@@ -142,8 +144,8 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
           }
         }
       } else {
-        console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
-        await page.close();
+        console.log('Error:',StudentID,'is missing a email address for us to use to create a LoginID. Be sure to populate eSchool email addresses before doing this.');
+        await stuPage.close();
         process.exit(1)
       }
 
@@ -227,8 +229,8 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
               let emailAddressSelector = await stuPage.$('#AddressOrContactDetail_Contact_Email');
               let emailAddress = await stuPage.evaluate(el => el.value, emailAddressSelector);
 
-              //If email is not empty then continue.
-              if (emailAddress.length > 0) {
+              //If email is not empty and -setloginidasemail or -setloginidasusername then attempt using it for the LoginID
+              if (emailAddress.length > 0 && (loginIDAsEmail || loginIDAsUsername)) {
                 if (loginIDAsEmail) {
                   //empty login id box
                   let loginIDSelector = await stuPage.$('#AddressOrContactDetail_Contact_LoginID');
@@ -250,7 +252,7 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
                   }
                 }
               } else {
-                console.log('Error:',StudentID,'is missing a username. Be sure to populate eSchool email addresses before doing this.');
+                console.log('Error:',StudentID,'is missing a email address for us to use to create a LoginID. Be sure to populate eSchool email addresses before doing this.');
                 await stuPage.close();
                 continue
               }

@@ -1,6 +1,8 @@
 # HAC_Passwords
 
-This project is for Arkansas Public Schools to set their students HAC passwords to a predefined password.
+This project is for Arkansas Public Schools to set their students HAC passwords to a predefined password.  Unfortunately we couldn't use Powershell to accomplish this task as parts of the student profile page is rendered via Javascript. This project invokes a headless browser and submits the tasks as needed. Individually or in bulk using a CSV.
+
+These scripts come without warranty of any kind. Use them at your own risk. I assume no liability for the accuracy, correctness, completeness, or usefulness of any information provided by this site nor for any sort of damages using these scripts may cause.
 
 Sample command for single student:
 ````
@@ -29,6 +31,9 @@ Student_id,Password
 403001234,Sports.1234
 403002345,Water!2345
 ````
+
+## Requirements
+* Node.js `https://nodejs.org/en/download/`
 
 ## Install needed modules:
 * npm i puppeteer
