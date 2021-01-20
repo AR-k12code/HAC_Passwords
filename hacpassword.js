@@ -62,7 +62,7 @@ if (process.argv.indexOf('-displayprogress') > 0) {
   if (displayProgress) {
     var browser = await puppeteer.launch({
       headless: false,
-      slowMo: 100
+      slowMo: 75
     });
   } else {
     var browser = await puppeteer.launch();
@@ -162,9 +162,12 @@ if (process.argv.indexOf('-displayprogress') > 0) {
 
       }
 
-      if (passwordChangeNotRequired) {
-        await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
-      }
+      //If you have student password change disabled then you can't click this box.
+      try {
+        if (passwordChangeNotRequired) {
+          await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
+        }
+      } catch {}
 
       await page.click('#pageOptions-option-save');
       await page.waitForTimeout(500);
@@ -277,9 +280,12 @@ if (process.argv.indexOf('-displayprogress') > 0) {
 
               } 
 
-              if (passwordChangeNotRequired) {
-                await stuPage.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
-              }
+              //If you have student password change disabled then you can't click this box.
+              try {
+                if (passwordChangeNotRequired) {
+                  await stuPage.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
+                }
+              } catch {}
 
               await stuPage.click('#pageOptions-option-save');
               await stuPage.waitForTimeout(1000);
@@ -303,6 +309,8 @@ if (process.argv.indexOf('-displayprogress') > 0) {
 
             } catch(err) {
               console.log("Failed to update",StudentID,": ",err)
+              //still need to close the window.
+              await stuPage.close();
             }
 
             //if we reached the end of the loop then close completely.

@@ -40,6 +40,9 @@ Student_id,Password
 * npm i puppeteer
 * npm i csv-parser
 
+## Gotchas
+If your Mailing and Physical contacts for a student have different contact ID numbers then you will need to make sure the LoginID is unique for each of them. Otherwise you run into a duplicate ID error.
+
 ## Project Goals:
 - [x] Lots of Error Control
 - [x] Processing a CSV
