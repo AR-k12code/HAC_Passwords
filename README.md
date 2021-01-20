@@ -27,6 +27,12 @@ Student_id,Password
 403002345,Water!2345
 ````
 
+## CSV Error Output:
+````
+Student_id,Error Details
+403001234,"The Password must be at least 8 character(s) in length."
+````
+
 ## PowerShell Wrapper example your using your existing Encrypted Password:
 ````
 .\hacpassword.ps1 -username 0403cmillsap -studentID 403005966 -hacpassword "Testing 123234" -SetLoginIDasEmail -DoNotRequirePasswordChange
@@ -39,6 +45,9 @@ Student_id,Password
 ## Install needed modules:
 * npm i puppeteer
 * npm i csv-parser
+
+## Gotchas
+If your Mailing and Physical contacts for a student have different contact ID numbers then you will need to make sure the LoginID is unique for each of them. Otherwise you run into a duplicate ID error.
 
 ## Project Goals:
 - [x] Lots of Error Control

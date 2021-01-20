@@ -57,12 +57,16 @@ if (process.argv.indexOf('-displayprogress') > 0) {
   var displayProgress = true
 }
 
+fs.writeFile('hac_errors.csv', "Student_id,Error Details\r\n", (err) => {
+  if (err) throw err;
+});
+
 // eSchool login
 (async () => {
   if (displayProgress) {
     var browser = await puppeteer.launch({
       headless: false,
-      slowMo: 100
+      slowMo: 75
     });
   } else {
     var browser = await puppeteer.launch();
@@ -162,9 +166,12 @@ if (process.argv.indexOf('-displayprogress') > 0) {
 
       }
 
-      if (passwordChangeNotRequired) {
-        await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
-      }
+      //If you have student password change disabled then you can't click this box.
+      try {
+        if (passwordChangeNotRequired) {
+          await page.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
+        }
+      } catch {}
 
       await page.click('#pageOptions-option-save');
       await page.waitForTimeout(500);
@@ -191,6 +198,9 @@ if (process.argv.indexOf('-displayprogress') > 0) {
       
     } else {
       //csv file has been supplied. Lets do some crazy looping.
+
+      //close the original login page because of the timeout box.
+      await page.close();
 
       fs.createReadStream(csvPath)
       .pipe(csv())
@@ -274,9 +284,12 @@ if (process.argv.indexOf('-displayprogress') > 0) {
 
               } 
 
-              if (passwordChangeNotRequired) {
-                await stuPage.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
-              }
+              //If you have student password change disabled then you can't click this box.
+              try {
+                if (passwordChangeNotRequired) {
+                  await stuPage.click('#AddressOrContactDetail_Contact_MustChangePasswordNextLogin');
+                }
+              } catch {}
 
               await stuPage.click('#pageOptions-option-save');
               await stuPage.waitForTimeout(1000);
@@ -294,12 +307,24 @@ if (process.argv.indexOf('-displayprogress') > 0) {
                 let element = await stuPage.$('#error-list > li');
                 let value = await stuPage.evaluate(el => el.textContent, element);
                 console.log("Error:",value);
+
+                fs.appendFile('hac_errors.csv', StudentID + ',"' + value + '"\r\n', function (err) {
+                  if (err) throw err;
+                });
+
               }
 
               await stuPage.close();
 
             } catch(err) {
               console.log("Failed to update",StudentID,": ",err)
+              
+              fs.appendFile('hac_errors.csv', StudentID + ',Generic Error\r\n', function (err) {
+                if (err) throw err;
+              });
+
+              //still need to close the window.
+              await stuPage.close();
             }
 
             //if we reached the end of the loop then close completely.
@@ -313,7 +338,7 @@ if (process.argv.indexOf('-displayprogress') > 0) {
     }
 
   } catch(err) {
-    console.log('Failed to update password.')
+    console.log('Program crash.',err)
     process.exit(1)
   }
 
