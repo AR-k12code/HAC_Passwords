@@ -53,14 +53,20 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
   var loginIDAsUsername = true
 }
 
+if (process.argv.indexOf('-displayprogress') > 0) {
+  var displayProgress = true
+}
 
 // eSchool login
 (async () => {
-  const browser = await puppeteer.launch({
-    //uncomment to troubleshoot
-    headless: false,
-    //slowMo: 250
-  });
+  if (displayProgress) {
+    var browser = await puppeteer.launch({
+      headless: false,
+      slowMo: 100
+    });
+  } else {
+    var browser = await puppeteer.launch();
+  }
   
   const page = await browser.newPage();
 
@@ -88,11 +94,12 @@ if (process.argv.indexOf('-setloginidasusername') > 0) {
     await page.type('#UserName', username);
     await page.type('#Password', password);
     await page.click('#login');
-    await page.waitForNavigation({
-      waitUntil: 'networkidle0',
-    });
+    // await page.waitForNavigation({
+    //   waitUntil: 'networkidle0',
+    // });
     
-    // debugger;
+    // // debugger;
+    await page.waitForSelector('#setEnvOkButton');
     await page.click('#setEnvOkButton');
 
     // this doesn't always work.

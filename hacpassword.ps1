@@ -11,7 +11,8 @@ Param(
 [parameter(mandatory=$false,Helpmessage="Student HAC Password")][string]$hacpassword,
 [parameter(mandatory=$false,Helpmessage="Do not require password change")][switch]$DoNotRequirePasswordChange,
 [parameter(mandatory=$false,Helpmessage="Set the Login ID to the Email Address in eSchool")][switch]$SetLoginIDasEmail,
-[parameter(mandatory=$false,Helpmessage="Set the Login ID to the username from the Email Address in eSchool")][switch]$SetLoginIDasUsername
+[parameter(mandatory=$false,Helpmessage="Set the Login ID to the username from the Email Address in eSchool")][switch]$SetLoginIDasUsername,
+[parameter(mandatory=$false,Helpmessage="Display the browser instead of it being headless.")][switch]$DisplayProgress
 )
 
 #encrypted password file.
@@ -42,6 +43,10 @@ if ($SetLoginIDasEmail) {
     $nodeArguments += @('-setloginidasemail')
 } elseif ($SetLoginIDasUsername) {
     $nodeArguments += @('-setloginidasusername')
+}
+
+if ($DisplayProgress) {
+    $nodeArguments += @('-displayprogress')
 }
 
 Start-Process -FilePath "node.exe" -ArgumentList $nodeArguments -NoNewWindow -Wait
