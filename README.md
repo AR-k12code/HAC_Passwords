@@ -47,7 +47,8 @@ Student_id,Error Details
 * npm i csv-parser
 
 ## Gotchas
-If your Mailing and Physical contacts for a student have different contact ID numbers then you will need to make sure the LoginID is unique for each of them. Otherwise you run into a duplicate ID error.
+- If your Mailing and Physical contacts for a student have different contact ID numbers then you will need to make sure the LoginID is unique for each of them. Otherwise you run into a duplicate ID error.
+- In eSchool under the District HAC Configuration if you leave it where students can change their passwords then your students will be asked their security questions when they first login.
 
 ## Project Goals:
 - [x] Lots of Error Control

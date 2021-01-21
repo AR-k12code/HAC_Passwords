@@ -324,7 +324,9 @@ fs.writeFile('hac_errors.csv', "Student_id,Error Details\r\n", (err) => {
               });
 
               //still need to close the window.
-              await stuPage.close();
+              try {
+                await stuPage.close();
+              } catch {}
             }
 
             //if we reached the end of the loop then close completely.
