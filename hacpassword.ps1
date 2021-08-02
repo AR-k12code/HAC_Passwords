@@ -15,6 +15,11 @@ Param(
 [parameter(mandatory=$false,Helpmessage="Display the browser instead of it being headless.")][switch]$DisplayProgress
 )
 
+#use the CognosDefaults.ps1 if available for custom password paths.
+if (Test-Path ..\CognosDefaults.ps1) {
+    . .\..\CognosDefaults.ps1
+}
+
 #encrypted password file.
 If (Test-Path $passwordfile) {
     $password = (New-Object pscredential "user",(Get-Content $passwordfile | ConvertTo-SecureString)).GetNetworkCredential().Password
