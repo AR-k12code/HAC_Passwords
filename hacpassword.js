@@ -66,7 +66,7 @@ fs.writeFile('hac_errors.csv', "Student_id,Error Details\r\n", (err) => {
   if (displayProgress) {
     var browser = await puppeteer.launch({
       headless: false,
-      slowMo: 75
+      slowMo: 20
     });
   } else {
     var browser = await puppeteer.launch();
