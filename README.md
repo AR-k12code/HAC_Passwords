@@ -14,6 +14,15 @@ Sample command for processing a CSV:
 node hacpassword.js -username 0401cmillsap -password [SSOPASSWORD] -csv hac_passwords.csv -donotrequirepasswordchange -setloginidasusername
 ````
 
+## PowerShell Wrapper example using your existing Encrypted Password:
+The powershell wrapper will automatically use the passwordfile c:\scripts\apscnpw.txt. If you keep it somewhere else then specify it on the command line with the -passwordfile parameter.
+````
+.\hacpassword.ps1 -username 0403cmillsap -studentID 403005966 -hacpassword "Testing 123234" -SetLoginIDasEmail -DoNotRequirePasswordChange
+.\hacpassword.ps1 -username 0403cmillsap -CSV hac_passwords.csv -SetLoginIDasUsername -DoNotRequirePasswordChange -DisplayProgress
+
+.\hacpassword.ps1 -username 0403cmillsap -passwordfile C:\Scripts\apscnpw.txt -studentID 403005966 -hacpassword "Testing 123234" -SetLoginIDasEmail -DoNotRequirePasswordChange
+````
+
 ## Command Line arguments:
 - `-donotrequirepasswordchange` Check the box do not require password change.
 - `-setloginidasemail` Sets the HAC login to the value of the Email Box. This needs to be populated otherwise will error.
@@ -33,16 +42,10 @@ Student_id,Error Details
 403001234,"The Password must be at least 8 character(s) in length."
 ````
 
-## PowerShell Wrapper example your using your existing Encrypted Password:
-````
-.\hacpassword.ps1 -username 0403cmillsap -studentID 403005966 -hacpassword "Testing 123234" -SetLoginIDasEmail -DoNotRequirePasswordChange
-.\hacpassword.ps1 -username 0403cmillsap -CSV hac_passwords.csv -SetLoginIDasUsername -DoNotRequirePasswordChange -DisplayProgress
-````
-
 ## Requirements
 * Node.js `https://nodejs.org/en/download/`
 
-## Install needed modules:
+## Install needed modules (run command in HAC_Passwords directory):
 * npm i puppeteer
 * npm i csv-parser
 
