@@ -294,6 +294,14 @@ fs.writeFile('hac_errors.csv', "Student_id,Error Details\r\n", (err) => {
               await stuPage.click('#pageOptions-option-save');
               await stuPage.waitForTimeout(1000);
 
+              //Duplicate priority phone numbers will cause an additional prompt.
+              try {
+                await stuPage.waitForSelector('#phonePrioritiesWarning-yes', {
+                  timeout: 500
+                });
+                await stuPage.click('#phonePrioritiesWarning-yes');
+              } catch {}
+
               try {
                 //If the password passes the validation then we should see the confirmation button.
                 await stuPage.waitForSelector('#saveWarning-yes', {
