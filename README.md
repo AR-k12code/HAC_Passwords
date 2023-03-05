@@ -20,7 +20,7 @@ We must download Chromium v110 separately as it is too large for github.
 
 ### Autoomatic Method (possible breakage on URL changes.)
 ````
-Invoke-WebRequest -Uri "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F1084068%2Fchrome-win.zip?alt=media" -OutFile "$($env:temp)\chrome-win.zip" -Force
+Invoke-WebRequest -Uri "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F1084068%2Fchrome-win.zip?alt=media" -OutFile "$($env:temp)\chrome-win.zip"
 Expand-Archive -Path "$($env:temp)\chrome-win.zip" -DestinationPath .\bin\ -Force
 ````
 
