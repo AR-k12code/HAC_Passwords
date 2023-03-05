@@ -6,6 +6,10 @@
     .SYNOPSIS
     This project will automate setting students HAC Login ID and Password.
 
+    .NOTES
+    Author: Craig Millsap, CAMTech Computer Services LLC. https://www.camtechcs.com
+    Date: 3/4/2023
+
 #>
 
 
