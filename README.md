@@ -1,60 +1,55 @@
 # HAC_Passwords
-
-This project is for Arkansas Public Schools to set their students HAC passwords to a predefined password.  Unfortunately we couldn't use Powershell to accomplish this task as parts of the student profile page is rendered via Javascript. This project invokes a headless browser and submits the tasks as needed. Individually or in bulk using a CSV.
-
 These scripts come without warranty of any kind. Use them at your own risk. I assume no liability for the accuracy, correctness, completeness, or usefulness of any information provided by this site nor for any sort of damages using these scripts may cause.
 
-Sample command for single student:
-````
-$ node hacpassword.js -username 0401cmillsap -password [SSOPASSWORD] -studentid 40305966 -hacpassword "NewP@ssw0rd" -donotrequirepasswordchange -setloginidasemail
-````
+This project is for Arkansas Public Schools to set their students HAC passwords to a predefined password. Unfortunately we couldn't use Powershell to accomplish this task as parts of the student profile page is rendered via Javascript. This project invokes a headless browser and submits the tasks as needed.
 
-Sample command for processing a CSV:
-````
-node hacpassword.js -username 0401cmillsap -password [SSOPASSWORD] -csv hac_passwords.csv -donotrequirepasswordchange -setloginidasusername
-````
+This project has been changed from node.js using Puppeteer to Powershell using Selenium. This process now takes about 5:30 to set up 100 students.
 
-## PowerShell Wrapper example using your existing Encrypted Password:
-The powershell wrapper will automatically use the passwordfile c:\scripts\apscnpw.txt. If you keep it somewhere else then specify it on the command line with the -passwordfile parameter.
-````
-.\hacpassword.ps1 -username 0403cmillsap -studentID 403005966 -hacpassword "Testing 123234" -SetLoginIDasEmail -DoNotRequirePasswordChange
-.\hacpassword.ps1 -username 0403cmillsap -CSV hac_passwords.csv -SetLoginIDasUsername -DoNotRequirePasswordChange -DisplayProgress
+ChromeDriver.exe and the Selenium WebDriver.dll are included in this project:
+- https://chromedriver.chromium.org/downloads
+- https://www.nuget.org/packages/Selenium.WebDriver
 
-.\hacpassword.ps1 -username 0403cmillsap -passwordfile C:\Scripts\apscnpw.txt -studentID 403005966 -hacpassword "Testing 123234" -SetLoginIDasEmail -DoNotRequirePasswordChange
-````
+We must download Chromium v110 separately as it is too large for github.
 
-## Command Line arguments:
-- `-donotrequirepasswordchange` Check the box do not require password change.
-- `-setloginidasemail` Sets the HAC login to the value of the Email Box. This needs to be populated otherwise will error.
-- `-setloginidasusername` Sets the HAC login to the value of the Email Box with the domain stripped off. (example JohnDoe@myschool.com would be JohnDoe)
-- `-displayprogress` Displays the browsers and slows down event times. Default is to run headless.
+### Manual Steps
+- https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/
+- From this site, https://omahaproxy.appspot.com/, we can see that the latest v110 is branch_base_position:1084008
+- Searching here: https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/ we look for the closest to 1084008 which at the time of this writing is 1084068.
+- https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/1084068/
+- Download chrome-win.zip and extract to bin\chrome-win.zip.
 
-## CSV Example:
+### Autoomatic Method (possible breakage on URL changes.)
 ````
-Student_id,Password
-403001234,Sports.1234
-403002345,Water!2345
+Invoke-WebRequest -Uri "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F1084068%2Fchrome-win.zip?alt=media" -OutFile "$($env:temp)\chrome-win.zip" -Force
+Expand-Archive -Path "$($env:temp)\chrome-win.zip" -DestinationPath .\bin\ -Force
 ````
 
-## CSV Error Output:
+This project will use the default CognosModule profile by default. If you wish to use other credentials you can specify the CognosModule profile name with the -CognosConfig parameter.
+
+# Command Line
 ````
-Student_id,Error Details
-403001234,"The Password must be at least 8 character(s) in length."
+hac_passwords.ps1 [-CognosConfig <String>] [-CSV <String>] [-ForcePasswordChange] [-DisplayProgress]
 ````
 
-## Requirements
-* Node.js `https://nodejs.org/en/download/`
+# Errors
+Errors will be stored at .\logs\errors.csv so you can parse it and take additional actions afterwards.
 
-## Install needed modules (run command in HAC_Passwords directory):
-* npm i puppeteer
-* npm i csv-parser
+# CSV Example
+````
+Student_id,Student_loginid,Student_password
+801001234,Craig.Mil26@cistrict.org,P@ssw0rd
+801001235,John.Doe29@cistrict.org,P@ssw0rd2
+````
 
-## Gotchas
-- If your Mailing and Physical contacts for a student have different contact ID numbers then you will need to make sure the LoginID is unique for each of them. Otherwise you run into a duplicate ID error.
-- In eSchool under the District HAC Configuration if you leave it where students can change their passwords then your students will be asked their security questions when they first login.
+# Pipe in CSV
+````
+'Student_id,Student_loginid,Student_password
+801001234,Craig.Mil26@cistrict.org,P@ssw0rd
+801001235,John.Doe29@cistrict.org,P@ssw0rd2' | .\hac_passwords.ps1
+````
 
-## Project Goals:
-- [x] Lots of Error Control
-- [x] Processing a CSV
-- [X] Do not require password change
-- [x] Set username to email or just username
+# Think Bigger!
+You would need to use some logic here to only set passwords for students who need it. Don't be setting all students over and over.
+````
+Invoke-SqlQuery -Query "SELECT Student_id,Student_email AS Student_loginid,Password AS Student_password" | ConvertTo-CSV | .\hac_passwords.ps1
+````
