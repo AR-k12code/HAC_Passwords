@@ -16,7 +16,7 @@ We must download Chromium v110 separately as it is too large for github.
 - From this site, https://omahaproxy.appspot.com/, we can see that the latest v110 is branch_base_position:1084008
 - Searching here: https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/ we look for the closest to 1084008 which at the time of this writing is 1084068.
 - https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/1084068/
-- Download chrome-win.zip and extract to bin\chrome-win.zip.
+- Download chrome-win.zip and extract to bin\chrome-win
 
 ### Autoomatic Method (possible breakage on URL changes.)
 ````
@@ -35,13 +35,18 @@ hac_passwords.ps1 [-CognosConfig <String>] [-CSV <String>] [-ForcePasswordChange
 Errors will be stored at .\logs\errors.csv so you can parse it and take additional actions afterwards.
 
 # CSV Example
+students.csv
 ````
 Student_id,Student_loginid,Student_password
 801001234,Craig.Mil26@cistrict.org,P@ssw0rd
 801001235,John.Doe29@cistrict.org,P@ssw0rd2
 ````
 
-# Pipe in CSV
+````
+.\hac_passwords.ps1 -CSV students.csv
+````
+
+# Stdin Pipe
 ````
 'Student_id,Student_loginid,Student_password
 801001234,Craig.Mil26@cistrict.org,P@ssw0rd
