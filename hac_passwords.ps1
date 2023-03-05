@@ -190,6 +190,7 @@ End {
 
                 $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("saveWarning-yes")).Click()
 
+                Start-Sleep -Milliseconds 500
                 #You can not wait for this. The Javascript is too slow, we have already submitted, then the Javascript makes additional changes on the page. This causes it to show as "Unsaved Changes."
 
                 # #The page never refreshes. Wait until the Changes Saved is diplayed.
