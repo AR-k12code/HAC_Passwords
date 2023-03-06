@@ -246,10 +246,10 @@ End {
         Remove-Item -Path "$PSScriptRoot\logs\errors.csv" -Force -ErrorAction SilentlyContinue
     }
 
-    Write-Output "Done Processing Students."
+    Write-Output "Done Processing Student HAC Passwords."
 
-    Start-Sleep -Seconds 5
     $ChromeDriver.Close()
+    $ChromeDriver.Dispose()
 
     Stop-Transcript
 }
