@@ -37,6 +37,15 @@ End {
     try { while (Stop-Transcript) {} } catch {} #close all other transcripts.
     Start-Transcript -Path $logfile -IncludeInvocationHeader -Force
 
+    @("$PSScriptRoot\bin\chrome-win\chrome.exe","$PSScriptRoot\bin\chromedriver.exe","$PSScriptRoot\bin\WebDriver.dll") | ForEach-Object {
+
+        if (-Not(Test-Path -Path "$PSitem")) {
+            Write-Error "Dependency missing: $($PSitem)"
+            Throw
+        }
+
+    }
+
     if ($IncomingCSVData) {
         $students = $IncomingCSVData | ConvertFrom-CSV
     } else {
