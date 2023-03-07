@@ -82,6 +82,11 @@ End {
     #no extensions, no session history, no notifications that might cause issues, window size is required for javascript rendering of page (even headless)
     $ChromeOptions.AddArguments(@("--disable-extensions","--incognito","--disable-notifications","--disable-popup-blocking","--window-size=1920,1080"))
 
+    $ChromeOptions.AddUserProfilePreference('profile.managed_default_content_settings.images',2)
+    
+    # This must be deprecated.
+    # $ChromeOptions.AddUserProfilePreference('profile.managed_default_content_settings.stylesheets', 2)
+
     #JavaScript appears to quit working on Headless.
     if (-Not($DisplayProgress)) {
         $ChromeOptions.AddArgument('--headless')
@@ -95,11 +100,9 @@ End {
     $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("UserName")).SendKeys($username)
     $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("Password")).SendKeys($password)
     $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("login")).Click()
-    $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("setEnvOkButton")).Click()
 
     #Lets grab the server, database, and year here.
     try {
-        $ChromeDriver.Navigate().GoToURL('https://eschool20.esp.k12.ar.us/eSchoolPLUS20/Account/SetEnvironment?actionDetails=EditEnvironment')
 
         $eSPServerName = $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("ServerName")).GetAttribute('value')
         $eSPDatabase = $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("EnvironmentConfiguration_Database")).Text
@@ -108,6 +111,9 @@ End {
         Write-Output "Server: $($eSPServerName)"
         Write-Output "Database: $($eSPDatabase)"
         Write-Output "School Year: $($eSPSchoolYear)"
+
+        $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("setEnvOkButton")).Click()
+
     } catch {
         Write-Error "Unable to find eSchool Environment"
         exit 1
@@ -194,12 +200,14 @@ End {
             try {
                 try {
                     $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("phonePrioritiesWarning-yes")).Click()
+                    Write-Warning "$StudentID has duplicate phone priorities listed."
                     Start-Sleep -Milliseconds 500
                 } catch {}
 
                 $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("saveWarning-yes")).Click()
 
-                Start-Sleep -Milliseconds 500
+                Start-Sleep -Milliseconds 200
+
                 #You can not wait for this. The Javascript is too slow, we have already submitted, then the Javascript makes additional changes on the page. This causes it to show as "Unsaved Changes."
 
                 # #The page never refreshes. Wait until the Changes Saved is diplayed.
