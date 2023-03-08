@@ -206,7 +206,8 @@ End {
 
                 $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("saveWarning-yes")).Click()
 
-                Start-Sleep -Milliseconds 200
+                # This delay is necessary for eSchool to recieve the submittal of the confirmation. I have tried less and it will fail.
+                Start-Sleep -Milliseconds 500
 
                 #You can not wait for this. The Javascript is too slow, we have already submitted, then the Javascript makes additional changes on the page. This causes it to show as "Unsaved Changes."
 
