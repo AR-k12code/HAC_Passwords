@@ -18,6 +18,7 @@ Param(
     [Parameter(Mandatory=$False)][string]$CognosConfig = "DefaultConfig",
     [Parameter(Mandatory=$false)][string]$CSV,
     [Parameter(Mandatory=$false)][Switch]$ForcePasswordChange,
+    [Parameter(Mandatory=$false)][int]$Timeout = 30, #10 is plenty for almost everyone. There are weird exceptions to every rule.
     [Parameter(Mandatory=$false)][Switch]$DisplayProgress
 )
 
@@ -151,7 +152,7 @@ End {
                 } catch {}
 
                 #we can't let it get stuck in here. 10 seconds is plenty.
-                if (((Get-Date) - $startTime).Seconds -gt 10) {
+                if (((Get-Date) - $startTime).Seconds -gt $Timeout) {
                     Throw "Timeout"
                 }
 

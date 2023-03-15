@@ -18,7 +18,7 @@ We must download Chromium v110 separately as it is too large for github.
 - https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/1084068/
 - Download chrome-win.zip and extract to bin\chrome-win
 
-### Autoomatic Method (possible breakage on URL changes.)
+### Automatic Method (possible breakage on URL changes.)
 ````
 Invoke-WebRequest -Uri "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F1084068%2Fchrome-win.zip?alt=media" -OutFile "$($env:temp)\chrome-win.zip"
 Expand-Archive -Path "$($env:temp)\chrome-win.zip" -DestinationPath .\bin\ -Force
@@ -49,8 +49,8 @@ Student_id,Student_loginid,Student_password
 # Stdin Pipe
 ````
 'Student_id,Student_loginid,Student_password
-801001234,Craig.Mil26@cistrict.org,P@ssw0rd
-801001235,John.Doe29@cistrict.org,P@ssw0rd2' | .\hac_passwords.ps1
+801001234,Craig.Mil26@district.org,P@ssw0rd
+801001235,John.Doe29@district.org,P@ssw0rd2' | .\hac_passwords.ps1
 ````
 
 # Think Bigger!
