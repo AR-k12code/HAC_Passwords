@@ -96,7 +96,7 @@ End {
     $ChromeDriver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($ChromeOptions)
 
     # Launch a browser and go to URL
-    $ChromeDriver.Navigate().GoToURL('https://eschool20.esp.k12.ar.us/eSchoolPLUS20')
+    $ChromeDriver.Navigate().GoToURL('https://eschool23.esp.k12.ar.us/eSchoolPLUS')
 
     $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("UserName")).SendKeys($username)
     $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("Password")).SendKeys($password)
@@ -134,7 +134,7 @@ End {
             $startTime = (Get-Date)
             Write-Output "$($StudentID),$($StudentEmail),$($StudentPassword)"
 
-            $ChromeDriver.Navigate().GoToURL("https://eschool20.esp.k12.ar.us/eSchoolPLUS20/Student/Registration/ContactDetail?studentId=$($StudentID)&ContactPageMode=Address&PageEditMode=Modify&ContactEditMode=Modify")
+            $ChromeDriver.Navigate().GoToURL("https://eschool23.esp.k12.ar.us/eSchoolPLUS/Student/Registration/ContactDetail?studentId=$($StudentID)&ContactPageMode=Address&PageEditMode=Modify&ContactEditMode=Modify")
 
             try {
                 #on the reload page alert this should force the issue to switch to another student.
