@@ -105,7 +105,7 @@ End {
     #Lets grab the server, database, and year here.
     try {
 
-        $eSPServerName = $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("ServerName")).GetAttribute('value')
+        https://github.com/AR-k12code/HAC_Passwords.git
         $eSPDatabase = $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("EnvironmentConfiguration_Database")).Text
         $eSPSchoolYear = $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("EnvironmentConfiguration_SchoolYear")).GetAttribute('value')
 
@@ -119,6 +119,16 @@ End {
         Write-Error "Unable to find eSchool Environment"
         exit 1
     }
+
+    #verify MFA screen and enter code if needed.
+    try {
+        if ($ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("VerificationToken"))) {
+
+            $mfaCode = Get-eSPMFACode
+            $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("VerificationToken")).SendKeys($mfaCode)
+            $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("mfa-submit")).Click()
+        }
+    } catch {}
 
     $eSPHACErrors = [System.Collections.Generic.List[Object]]::New()
 
