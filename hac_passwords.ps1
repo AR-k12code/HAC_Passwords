@@ -105,7 +105,6 @@ End {
     #Lets grab the server, database, and year here.
     try {
 
-        https://github.com/AR-k12code/HAC_Passwords.git
         $eSPDatabase = $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("EnvironmentConfiguration_Database")).Text
         $eSPSchoolYear = $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("EnvironmentConfiguration_SchoolYear")).GetAttribute('value')
 
