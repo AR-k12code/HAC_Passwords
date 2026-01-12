@@ -126,6 +126,7 @@ End {
             $mfaCode = Get-eSPMFACode
             $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("VerificationToken")).SendKeys($mfaCode)
             $ChromeDriver.FindElement([OpenQA.Selenium.By]::Id("mfa-submit")).Click()
+            Start-Sleep -Seconds 1 #takes a second to verify the mfa token.
         }
     } catch {}
 
